@@ -1,0 +1,14 @@
+<launch>
+    <param name="robot_description" textfile="$(find seto_scararobot2_description)/urdf/seto_scararobot2.urdf" />
+
+    <!-- send fake joint values -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="TRUE"/>
+    </node>
+
+    <!-- Combine joint values -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+    <!-- Show in Rviz   -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seto_scararobot2_description)/launch/seto_scararobot2.rviz" />
+</launch>

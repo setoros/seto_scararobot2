@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>seto_scararobot2_description</name>
+  <version>0.0.0</version>
+  <description>The seto_scararobot2_description package</description>
+
+  <maintainer email="hirokazu@dream-drive.net">SETOUCHI ROS STUDY GROUP</maintainer>
+
+  <license>MIT</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>joint_state_publisher</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
+  <run_depend>rviz</run_depend>
+
+  <export>
+  </export>
+</package>

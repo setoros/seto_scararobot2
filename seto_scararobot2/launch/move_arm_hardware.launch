@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Load the seto_scararobot URDF model into the parameter server -->
+  <param name="robot_description" textfile="$(find seto_scararobot2_description)/urdf/seto_scararobot2.urdf" />
+  
+  <!-- dynamixel controllers -->
+  <include file="$(find seto_scararobot2_dynamixel)/launch/dynamixel_controllers.launch">
+    <arg name="usb_port"                default="/dev/ttyUSB0"/>
+    <arg name="dxl_baud_rate"           default="1000000"/>
+  </include>
+
+  <!-- robot_state_publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+    <remap from="joint_states" to="/dynamixel_workbench/joint_states"/>
+  </node>
+
+  <!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seto_scararobot2_description)/launch/seto_scararobot2.rviz" />
+
+  <!-- アームの制御 -->
+  <node name="move_arm_dynamixel2" pkg="seto_scararobot2" type="move_arm_dynamixel2" />
+  
+  <!-- 統括コントロール -->
+	<node name="seto_scararobot2" pkg="seto_scararobot2" type="seto_scararobot2"/>
+
+  <!-- エンドエフェクタ -->
+ <include file="$(find beadsee)/launch/beadsee.launch"/>
+<!--   <include file="$(find beadsee)/launch/beadsee_dummy.launch"/>-->
+
+  <!-- webサーバーノード起動 -->
+  <node pkg="beads_setter" name="beads_setter" type="beads_setter.py"/>
+
+</launch>

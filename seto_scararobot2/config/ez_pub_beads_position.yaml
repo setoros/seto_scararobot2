@@ -1,0 +1,13 @@
+publish_interval: 100
+settings:
+  /beads_position/x:
+    is_repeat: false
+    max: 150.0
+    min: -150.0
+  /beads_position/y:
+    is_repeat: false
+    max: 150.0
+    min: -150.0
+texts:
+- /beads_position/x
+- /beads_position/y

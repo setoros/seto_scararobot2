@@ -1,0 +1,10 @@
+seto_scararobot:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+arm_controller:
+   type: position_controllers/JointTrajectoryController
+   joints:
+     - base_to_arm1
+     - arm1_to_arm2
