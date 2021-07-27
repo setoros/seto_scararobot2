@@ -1,12 +1,12 @@
 <launch>
     <param name="robot_description" textfile="$(find seto_scararobot2_description)/urdf/seto_scararobot2.urdf" />
 
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seto_scararobot2_description)/launch/seto_scararobot2.rviz" />
 
 	<!-- move_armノードを起動 (X,Yの座標からIKを計算し、jointstateを吐き出す) -->
-	<node name="move_arm2" pkg="seto_scararobot2" type="move_arm2" />
+	<node name="move_arm2" pkg="seto_scararobot2" type="move_arm2" output="screen"/>
 
 	<!-- rqt_ez_publisherを使ってX,Yを指示する -->
 	<node name="rqt_ez_publisher" pkg="rqt_ez_publisher" type="rqt_ez_publisher" args="--slider-file  $(find seto_scararobot2)/config/ez_pub_beads_position.yaml"/>

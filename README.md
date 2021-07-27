@@ -2,6 +2,19 @@
 
 ## 準備
 
+### インストール
+
+事前に以下のパッケージをインストールする。
+
+```
+$ sudo apt-get update
+$ sudo apt install ros-noetic-joint-state-publisher-gui
+$ sudo apt install ros-noetic-joint-trajectory-controller
+$ sudo apt-get install ros-noetic-rqt-ez-publisher
+$ pip install flask
+$ pip install serial
+```
+
 ### ビルド
 
 1. ROSワークスペースのsrcフォルダの中にクローンして、catkin_make
@@ -12,7 +25,6 @@ $ git clone https://github.com/dreamdrive/seto_scararobot2.git
 $ cd ..
 $ catkin_make
 ```
-
 
 ## 使い方
 
@@ -72,11 +84,24 @@ $ roslaunch seto_scararobot move_arm_gazebo.launch
  $ echo 1 > /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
 ```
 
+## ヒント
+
+### catkin_makeを実行してもroslaunchでlaunchファイルが実行できない or 予測変換で出現しない
+以下のコマンドを実行する。
+```
+$ source devel/setup.bash
+```
+それでも直るらない場合はこちらを実行する。
+```
+$ rospack profile
+```
+
 ## 予定・課題
 * (n/a)
 
 ## 履歴
 * 2021/07/12 :  とりあえず、１号機から移植
+* 2021/07/27 :  noeticに対応。move_test1とmove_test2を2号機モデルに対応。
 
 ## Author
 

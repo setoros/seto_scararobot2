@@ -21,8 +21,8 @@ float arm2_length = 90.25;    // arm2の長さ
 float minimam_length = 60.00; // 最小目標距離(中心からの長さ)
 
 float arm1_sita = 0.0;
-float arm2_sita = 3.141592;
-float beads_pos_x = 0.0;
+float arm2_sita = 0;
+float beads_pos_x = 180.0;
 float beads_pos_y = 0.0;
 
 const std::string MSG_ARM_WAITING    = "Waiting";
@@ -44,21 +44,20 @@ void calculate_arm_pos()
   float x_2 = x * x;
   float y_2 = y * y;
 
-  // 半径による目標のチェック---------------------- ここから
   float length_goal;
   length_goal =  sqrt(x_2 + y_2);
-
+  ROS_INFO("[CALC] length_goal : %lf",length_goal);
 	if ( ((arm1_length + arm2_length) <= length_goal)  || (minimam_length >= length_goal) ){
-    ROS_WARN("[OUT OF RENGE] arm1_sita | arm2_sita : %lf | %lf",arm1_sita,arm2_sita);
-    return; // 範囲外のときは値を更新せずにリターン
+    ROS_ERROR("[ERROR]:Can't reach the goal.");
+    return;
 	}
-  // 半径による目標のチェック---------------------- ここまで
-
+  if ( x < 60.0 || x > 180.5 || y < 60.0 || y > 180.5){
+    ROS_ERROR("[ERROR]:Out of range for x or y.");
+    return;
+	}
   // IK計算
-  arm1_sita = atan2(y,x) - acosf((length_goal/2) / arm1_length);
-  arm2_sita = -2 * (asinf((length_goal/2) / arm1_length));
-
-  ROS_INFO("[CALC] arm1_sita | arm2_sita : %lf | %lf",arm1_sita,arm2_sita);
+  arm1_sita = atan2(y,x) - acosf( (arm1_length_2 - arm2_length_2 + (x_2 + y_2)) / (2 * arm1_length * length_goal) );
+  arm2_sita = M_PI - acosf( (arm1_length_2 + arm2_length_2 - (x_2 + y_2)) / (2 * arm1_length * arm2_length) );
   return;
 }
 
@@ -95,7 +94,7 @@ int main(int argc, char **argv)
     scara_arm.header.stamp = ros::Time::now();
     calculate_arm_pos();
     scara_arm.position[0] = arm1_sita;
-    scara_arm.position[1] = 3.141592 + arm2_sita;
+    scara_arm.position[1] = arm2_sita;
     scara_arm.position[2] = 0.0;
     pub_scara_arm.publish(scara_arm);
     ros::spinOnce();   // コールバック関数を呼ぶ
