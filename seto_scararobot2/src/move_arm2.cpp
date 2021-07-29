@@ -46,12 +46,11 @@ void calculate_arm_pos()
 
   float length_goal;
   length_goal =  sqrt(x_2 + y_2);
-  ROS_INFO("[CALC] length_goal : %lf",length_goal);
 	if ( ((arm1_length + arm2_length) <= length_goal)  || (minimam_length >= length_goal) ){
     ROS_ERROR("[ERROR]:Can't reach the goal.");
     return;
 	}
-  if ( x < 60.0 || x > 180.5 || y < 60.0 || y > 180.5){
+  if ( x < 0.0 || y < 0.0){
     ROS_ERROR("[ERROR]:Out of range for x or y.");
     return;
 	}

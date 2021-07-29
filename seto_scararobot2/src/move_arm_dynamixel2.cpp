@@ -22,6 +22,7 @@
 
 float arm1_length = 90.25;
 float arm2_length = 90.25;
+float minimam_length = 60.00; // 最小目標距離(中心からの長さ)
 
 float arm1_sita = 0.0;
 float arm2_sita = 0.0;
@@ -51,8 +52,6 @@ void beadsCallback(const geometry_msgs::Point &beads)
 {
 	beads_pos_x = (float)beads.x;
 	beads_pos_y = (float)beads.y;
-    //ROS_INFO("%lf",beads_pos_x);
-    //ROS_INFO("%lf",beads_pos_y);
 }
 
 // コールバックがあるとグローバルに読み込み
@@ -73,36 +72,25 @@ void calculate_arm_pos(float x,float y)
 {
   float arm1_length_2 = arm1_length * arm1_length;
   float arm2_length_2 = arm2_length * arm2_length;
-//  float x = beads_pos_x;
-//  float y = beads_pos_y;
   float x_2 = x * x;
   float y_2 = y * y;
 
   // 20191215 Micchy追加
   float length_goal;
   length_goal =  sqrt(x_2 + y_2);
-
-	if ( ((arm1_length + arm2_length) <= length_goal)  || (length_goal == 0.0)){
-    arm1_sita = 0.0;
-    arm2_sita = 0.0;
-    ROS_INFO("arm1_sita is %lf",arm1_sita);
-    ROS_INFO("arm2_sita is %lf",arm2_sita);
+  if ( ((arm1_length + arm2_length) <= length_goal)  || (minimam_length >= length_goal) ){
+    ROS_ERROR("[ERROR]:Can't reach the goal.");
+    ROS_ERROR("[ERROR]:x|%lf, y|%lf,", x, y );
     return;
 	}
-
-  // 20191215 Micchy追加
-  // 20200317 更新
-  if (y > 0){
-    arm1_sita = atan2(y,x) - acosf((length_goal/2) / arm1_length);
-    arm2_sita = -2 * (asinf((length_goal/2) / arm1_length));
-  }
-  else{
-    arm1_sita = atan2(y,x) + acosf((length_goal/2) / arm1_length);
-    arm2_sita = 2 * (asinf((length_goal/2) / arm1_length));
-  }
-
-  ROS_INFO("arm1_sita is %lf",arm1_sita);
-  ROS_INFO("arm2_sita is %lf",arm2_sita);
+  if ( x < 0.0 || y < 0.0){
+    ROS_ERROR("[ERROR]:Out of range for x or y.");
+    ROS_ERROR("[ERROR]:x|%lf, y|%lf,", x, y );
+    return;
+	}
+  // IK計算
+  arm1_sita = atan2(y,x) - acosf( (arm1_length_2 - arm2_length_2 + (x_2 + y_2)) / (2 * arm1_length * length_goal) );
+  arm2_sita = M_PI - acosf( (arm1_length_2 + arm2_length_2 - (x_2 + y_2)) / (2 * arm1_length * arm2_length) );
   return;
 }
 

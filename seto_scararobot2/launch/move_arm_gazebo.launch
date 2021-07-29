@@ -36,7 +36,7 @@
   </node>
 
   <!-- 統括コントロール -->
-	<node name="seto_scararobot2" pkg="seto_scararobot2" type="seto_scararobot2"/>
+	<node name="seto_scararobot2" pkg="seto_scararobot2" type="seto_scararobot2" output="screen" />
 
   <!-- エンドエフェクタ ダミーノード -->
   <include file="$(find beadsee)/launch/beadsee_dummy.launch"/>

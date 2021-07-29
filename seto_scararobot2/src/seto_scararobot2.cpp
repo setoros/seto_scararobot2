@@ -62,29 +62,86 @@ private:
   const int COLOR2 = 2;
   const int COLOR3 = 3;
   
-  //行番号
-  const int COLOR1_ROW = 10; 
-  const int COLOR2_ROW = 11;
-  const int COLOR3_ROW = 12;
 
-  //ビーズの個数
-  const int COLOR1_NUM = 29; 
-  const int COLOR2_NUM = 29;
-  const int COLOR3_NUM = 29;
+  std::vector<std::vector<int>> color_first = {
+    {0, 8}, {1, 8}, {2, 8},
+    {0, 9}, {1, 9}, {2, 9},
+    {0, 10}, {1, 10}, {2, 10},
+    {0, 11}, {1, 11}, {2, 11},
+    {0, 12}, {1, 12}, {2, 12},
+    {0, 13}, {1, 13}, {2, 13},
+    {0, 14}, {1, 14}, {2, 14},
+    {0, 15}, {1, 15}, {2, 15},
+    {0, 16}, {1, 16}, {2, 16},
+    {0, 17}, {1, 17}, {2, 17},
+    {0, 18}, {1, 18}, {2, 18},
+    {0, 19}, {1, 19}, {2, 19},
+    {0, 20}, {1, 20}, {2, 20},
+    {0, 21}, {1, 21}, {2, 21},
+    {0, 22}, {1, 22}, {2, 22},
+    {0, 23}, {1, 23}, {2, 23},
+    {0, 24}, {1, 24}, {2, 24},
+    {0, 25}, {1, 25}, {2, 25},
+    {0, 26}, {1, 26}, {2, 26},
+    {0, 27}, {1, 27}, {2, 27},
+    {0, 28}, {1, 28}, {2, 28},
+  };
 
-  //オフセット位置（-29〜29)
-  const int OFFSET_X = 1;
-  const int OFFSET_Y = 10;
+  std::vector<std::vector<int>> color_second = {
+    {3, 8}, {4, 8}, {5, 8},
+    {3, 9}, {4, 9}, {5, 9},
+    {3, 10}, {4, 10}, {5, 10},
+    {3, 11}, {4, 11}, {5, 11},
+    {3, 12}, {4, 12}, {5, 12},
+    {3, 13}, {4, 13}, {5, 13},
+    {3, 14}, {4, 14}, {5, 14},
+    {3, 15}, {4, 15}, {5, 15},
+    {3, 16}, {4, 16}, {5, 16},
+    {3, 17}, {4, 17}, {5, 17},
+    {3, 18}, {4, 18}, {5, 18},
+    {3, 19}, {4, 19}, {5, 19},
+    {3, 20}, {4, 20}, {5, 20},
+    {3, 21}, {4, 21}, {5, 21},
+    {3, 22}, {4, 22}, {5, 22},
+    {3, 23}, {4, 23}, {5, 23},
+    {3, 24}, {4, 24}, {5, 24},
+    {3, 25}, {4, 25}, {5, 25},
+    {3, 26}, {4, 26}, {5, 26},
+    {3, 27}, {4, 27}, {5, 27},
+    {3, 28}, {4, 28}, {5, 28},
+  };
+
+  std::vector<std::vector<int>> color_third = {
+    {6, 8}, {7, 8}, {8, 8},
+    {6, 9}, {7, 9}, {8, 9},
+    {6, 10}, {7, 10}, {8, 10},
+    {6, 11}, {7, 11}, {8, 11},
+    {6, 12}, {7, 12}, {8, 12},
+    {6, 13}, {7, 13}, {8, 13},
+    {6, 14}, {7, 14}, {8, 14},
+    {6, 18}, {7, 15}, {8, 15},
+    {6, 16}, {7, 16}, {8, 16},
+    {6, 17}, {7, 17}, {8, 17},
+    {6, 18}, {7, 18}, {8, 18},
+    {6, 19}, {7, 19}, {8, 19},
+    {6, 20}, {7, 20}, {8, 20},
+    {6, 21}, {7, 21}, {8, 21},
+    {6, 22}, {7, 22}, {8, 22},
+    {6, 23}, {7, 23}, {8, 23},
+    {6, 24}, {7, 24}, {8, 24},
+    {6, 25}, {7, 25}, {8, 25},
+    {6, 26}, {7, 26}, {8, 26},
+    {6, 27}, {7, 27}, {8, 27},
+    {6, 28}, {7, 28}, {8, 28},
+  };
+
+  //オフセット位置(mm)
+  const int OFFSET_X = 20;
+  const int OFFSET_Y = 20;
 
   const double DISTANCE = 5; //ビーズ間の距離（mm）
 
   int set_count;
-
-  //ビーズの個数
-  int beads_color1_num = COLOR1_NUM;
-  int beads_color2_num = COLOR2_NUM;
-  int beads_color3_num = COLOR3_NUM;
-
 
   ros::Publisher  pub_arm_position;
   ros::Publisher  pub_move_endeffector;
@@ -112,9 +169,6 @@ private:
     received_endeffector_states = "";
     move_endeffector = "";
     set_count = 0;
-    beads_color1_num = COLOR1_NUM;
-    beads_color2_num = COLOR2_NUM;
-    beads_color3_num = COLOR3_NUM;
     send_msg.data = "";
     arm_positions = {};
   }
@@ -185,7 +239,7 @@ private:
     {
       if (std::isalpha(static_cast<unsigned char>(received_beads_positions.c_str()[i])))
       {
-        //アルファベットを１０位上の数字に置き換える処理
+        //アルファベットを１０以上の数字に置き換える処理（未実装）
       }
       else
       {
@@ -272,34 +326,36 @@ public:
           {
             ROS_INFO("CatchBeads");
             step_++;
-            //step_=SetBeads;
           }
           break;
         }
 
         case CatchBeads:
         {
-
           if(arm_positions[set_count] == COLOR1)
           {
-            arm_position.x = (COLOR1_NUM - beads_color1_num + OFFSET_X)* DISTANCE;
-            arm_position.y = (COLOR1_ROW - 1 + OFFSET_Y) * DISTANCE;
-            beads_color1_num--;
+            arm_position.x = color_first[color_first.size() - 1][0] * DISTANCE;
+            arm_position.y = color_first[color_first.size() - 1][1] * DISTANCE;
+            color_first.pop_back();
+            ROS_WARN("arm_position.x = %lf arm_position.y = %lf", arm_position.x, arm_position.y);
           }
           else if(arm_positions[set_count] == COLOR2)
           {
-            arm_position.x = (COLOR2_NUM - beads_color2_num + OFFSET_X)* DISTANCE;
-            arm_position.y = (COLOR2_ROW - 1 + OFFSET_Y) * DISTANCE;
-            beads_color2_num--;
+            arm_position.x = color_second[color_second.size() - 1][0] * DISTANCE;
+            arm_position.y = color_second[color_second.size() - 1][1] * DISTANCE;
+            color_second.pop_back();
+            ROS_INFO("arm_position.x = %lf, arm_position.y = %lf", arm_position.x, arm_position.y);
           }
           else if(arm_positions[set_count] == COLOR3)
           {
-            arm_position.x = (COLOR3_NUM - beads_color3_num + OFFSET_X)* DISTANCE;
-            arm_position.y = (COLOR3_ROW - 1 + OFFSET_Y) * DISTANCE;
-            beads_color3_num--;
+            arm_position.x = color_third[color_third.size() - 1][0] * DISTANCE;
+            arm_position.y = color_third[color_third.size() - 1][1] * DISTANCE;
+            color_third.pop_back();
+            ROS_INFO("arm_position.x = %lf, arm_position.y = %lf", arm_position.x, arm_position.y);
           }
           pub_arm_position.publish(arm_position);
           step_++;
+          
           ROS_INFO("WaitCatchBeads");
           break;
         }
@@ -337,14 +393,10 @@ public:
 
         case SetBeads:
         {
-          arm_position.x = ((int)(set_count % (int)sqrt(arm_positions.size())) + OFFSET_X) * DISTANCE;
-          arm_position.y = ((int)(set_count / (int)sqrt(arm_positions.size())) + OFFSET_Y) * DISTANCE;
-          //arm_position.x = ((int)(set_count % 29) + OFFSET_X)* DISTANCE;
-          //arm_position.y = ((int)(set_count / 29) + OFFSET_Y) * DISTANCE;
+          arm_position.x = (int)(set_count % (int)sqrt(arm_positions.size())) * DISTANCE + OFFSET_X;
+          arm_position.y = (int)(set_count / (int)sqrt(arm_positions.size())) * DISTANCE + OFFSET_Y;
           pub_arm_position.publish(arm_position);
           step_++;
-          // デバッグ用かな、先に進めなかったのでコメントアウト
-          // step_=CheckFinishTask;
           ROS_INFO("WaitSetBeads");
           break;
         }

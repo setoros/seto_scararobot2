@@ -11,6 +11,7 @@ $ sudo apt-get update
 $ sudo apt install ros-noetic-joint-state-publisher-gui
 $ sudo apt install ros-noetic-joint-trajectory-controller
 $ sudo apt-get install ros-noetic-rqt-ez-publisher
+$ sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers
 $ pip install flask
 $ pip install serial
 ```
