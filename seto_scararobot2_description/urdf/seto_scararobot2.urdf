@@ -9,7 +9,7 @@
                 <mesh filename="package://seto_scararobot2_description/meshes/base.stl" />
             </geometry>
             <material name="gray">
-                <color rgba="0.5 0.5 0.5 2.0" />
+                <color rgba="0.5 0.5 0.5 1.0" />
             </material>
         </visual>
         <collision>
@@ -33,7 +33,7 @@
                 <mesh filename="package://seto_scararobot2_description/meshes/arm1.stl" />
             </geometry>
             <material name="green">
-                <color rgba="0.0 1.0 0. 2.0" />
+                <color rgba="0.0 1.0 0. 1.0" />
             </material>
         </visual>
         <collision>
@@ -57,7 +57,7 @@
                 <mesh filename="package://seto_scararobot2_description/meshes/arm2.stl" />
             </geometry>
             <material name="red">
-                <color rgba="1.0 0.0 0.0 2.0" />
+                <color rgba="1.0 0.0 0.0 1.0" />
             </material>
         </visual>
         <collision>
