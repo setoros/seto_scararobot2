@@ -1,0 +1,142 @@
+#beads_canvas {
+    width: 500px;
+    height: 500px;
+    float: left;
+}
+
+
+#color_select {
+    width: 160px;
+    margin: 0 0 0 20px;
+    padding: 8px;
+    float: left;
+    border: 1px #000 solid;
+}
+    
+    #color_select dt {
+        width: 100%;
+        height: 1em;
+        float: left;
+        margin-bottom: 8px;
+    }
+    
+    #color_select dd {
+        width: 100%;
+        height: 40px;
+        margin: 0 0 3px 0;
+        float: left;
+        border: 1px #000 solid;
+    }
+    
+    .color_dd {
+        width: 32px !important;
+        height: 32px !important;
+        margin: 0 5px 5px 0  !important;
+    }
+    
+    body > div {
+        width: 700px;
+        float: left;
+    }
+    
+    #btn_box {
+        width: 700px;
+        float: left;
+        text-align: right;
+    }
+    
+    /* 色 */
+/*
+    #color_select dt:first-child + dd {
+        background: #F4152F;
+    }
+    
+    #color_select dt:first-child + dd + dd {
+        background: #EB9DCB;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd {
+        background: #E5C933;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd {
+        background: #638C6D;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd {
+        background: #A01A29;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd + dd {
+        background: #EEF6F1;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd + dd + dd {
+        background: #111F20;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd + dd + dd + dd {
+        background: #36B13D;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd + dd + dd + dd + dd {
+        background: #EB4D29;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd + dd + dd + dd + dd + dd {
+        background: #B74373;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd + dd + dd + dd + dd + dd + dd {
+        background: #323067;
+    }
+    
+    #color_select dt:first-child + dd + dd + dd + dd + dd + dd + dd + dd + dd + dd + dd + dd {
+        background: #246DAB;
+    }
+    */
+    
+    #current_color_title {
+        margin-top: 8px;
+    }
+    
+    #current_color {
+        height: 28px !important;
+        padding-top: 10px;
+        text-align: center;
+        font-weight: bold;
+    }
+    
+    #tool_select {
+        width: 160px;
+        margin: 0 0 8px 20px;
+        padding: 8px;
+        float: left;
+        border: 1px #000 solid;
+    }
+        
+        #tool_select > dt {
+            width: 100%;
+            height: 1em;
+            float: left;
+            margin-bottom: 8px;
+        }
+        
+        #tool_select > dd {
+            width: 48px;
+            height: 48px;
+            margin: 0 3px 3px 0;
+            padding: 0;
+            float: left;
+            border: 1px #000 solid;
+        }
+        
+        .tool_icon {
+            width: 48px;
+            height: 48px;
+        }
+        
+#image,
+#template29 {
+    display: none;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>ビーズセッター操作画面</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="/static/beads_setter.css" rel="stylesheet" type="text/css">
+        <script src="/static/jquery-3.1.0.min.js"></script>
+        <script src="/static/easeljs-0.8.2.min.js"></script>
+        <script src="/static/bitmapdata-1.1.1.min.js"></script>
+        <script src="/static/sha_dev.js"></script>
+        <script src="/static/beads_setter.js"></script>
+    </head>
+
+    <body>
+
+        <div>
+
+            <!-- ビーズセット画面 -->
+            <canvas id="beads_canvas" width="500" height="500"></canvas>
+
+            <!-- ツール選択 -->
+            <dl id="tool_select">
+                <dt>ツール</dt>
+                <dd><img src="/static/pen.png" id="pen" class="tool_icon" style="background: rgb(135, 206, 250);"></dd>
+                <dd><img src="/static/eraser.png" id="eraser" class="tool_icon"></dd>
+            </dl>
+
+            <!-- ビーズ色選択 -->
+            <dl id="color_select">
+                <dt id="current_color_title">選択中のビーズ色</dt>
+                <dd id="current_color">なし</dd>
+
+                <dt>ビーズカラー選択</dt>
+            <dd data-color-id="1" class="color_dd" style="background-color: #d10011;"></dd><dd data-color-id="2" class="color_dd" style="background-color: #76c789;"></dd><dd data-color-id="3" class="color_dd" style="background-color: #623882;"></dd><dd data-color-id="4" class="color_dd" style="background-color: #df852d;"></dd><dd data-color-id="5" class="color_dd" style="background-color: #f67700;"></dd><dd data-color-id="6" class="color_dd" style="background-color: #8b8a8e;"></dd><dd data-color-id="7" class="color_dd" style="background-color: #1791c8;"></dd><dd data-color-id="8" class="color_dd" style="background-color: #e52f81;"></dd><dd data-color-id="9" class="color_dd" style="background-color: #eac005;"></dd><dd data-color-id="A" class="color_dd" style="background-color: #e73e95;"></dd><dd data-color-id="B" class="color_dd" style="background-color: #ece9e4;"></dd><dd data-color-id="C" class="color_dd" style="background-color: #090808;"></dd><dd data-color-id="D" class="color_dd" style="background-color: #8c481c;"></dd><dd data-color-id="E" class="color_dd" style="background-color: #4e2217;"></dd><dd data-color-id="F" class="color_dd" style="background-color: #007431;"></dd><dd data-color-id="G" class="color_dd" style="background-color: #af53a5;"></dd><dd data-color-id="H" class="color_dd" style="background-color: #6cbd03;"></dd><dd data-color-id="I" class="color_dd" style="background-color: #00a294;"></dd><dd data-color-id="J" class="color_dd" style="background-color: #00bf4a;"></dd><dd data-color-id="K" class="color_dd" style="background-color: #fa2933;"></dd><dd data-color-id="L" class="color_dd" style="background-color: #9dd7d8;"></dd><dd data-color-id="M" class="color_dd" style="background-color: #024390;"></dd><dd data-color-id="N" class="color_dd" style="background-color: #cecb00;"></dd><dd data-color-id="O" class="color_dd" style="background-color: #fc7a68;"></dd><dd data-color-id="P" class="color_dd" style="background-color: #9ba6a6;"></dd></dl>
+            <div id="btn_box">
+                <button id="clear">全消去</button>
+                <button id="stop">停止</button>
+                <button id="send_data">データ送信</button>
+            </div>
+
+        </div>
+</body></html>
