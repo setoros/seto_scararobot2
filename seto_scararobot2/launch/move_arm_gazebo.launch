@@ -27,7 +27,7 @@
   </node>
 
   <!-- rviz -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seto_scararobot2_description)/launch/seto_scararobot2.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seto_scararobot2_description)/rviz/seto_scararobot2.rviz" />
 
   <!-- アームの制御 -->
 	<node name="move_arm_dynamixel2" pkg="seto_scararobot2" type="move_arm_dynamixel2">

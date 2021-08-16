@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(seto_scararobot2)
+project(seto_scararobot2_dynamixel)
 
-## Compile as C++11, supported in ROS Noetic
-add_compile_options(-std=c++11)
+## Compile as C++11, supported in ROS Kinetic and newer
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -11,12 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   urdf
-  std_srvs
-  geometry_msgs
-  sensor_msgs
-  trajectory_msgs
-  cmake_modules
-  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -109,11 +103,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-#  LIBRARIES seto_scararobot
+#  INCLUDE_DIRS include
+#  LIBRARIES ptcam_description
 #  CATKIN_DEPENDS roscpp rospy urdf
 #  DEPENDS system_lib
-  CATKIN_DEPENDS roscpp std_srvs sensor_msgs trajectory_msgs geometry_msgs cmake_modules std_msgs rospy urdf
 )
 
 ###########
@@ -127,25 +120,9 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(move_test1 src/move_test1.cpp)
-add_dependencies(move_test1 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(move_test1 ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
-
-add_executable(move_arm src/move_arm.cpp)
-add_dependencies(move_arm ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(move_arm ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
-
-add_executable(move_arm_dynamixel2 src/move_arm_dynamixel2.cpp)
-add_dependencies(move_arm_dynamixel2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(move_arm_dynamixel2 ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
-
-add_executable(seto_scararobot2 src/seto_scararobot2.cpp)
-add_dependencies(seto_scararobot2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(seto_scararobot2 ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
-
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/seto_scararobot.cpp
+#   src/${PROJECT_NAME}/ptcam_description.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -156,7 +133,7 @@ target_link_libraries(seto_scararobot2 ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/seto_scararobot_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/ptcam_description_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -179,34 +156,6 @@ target_link_libraries(seto_scararobot2 ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES}
 
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
-
-install(TARGETS move_test1
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-
-install(TARGETS move_arm
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-install(TARGETS move_arm_dynamixel2
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-
-install(DIRECTORY include/${PROJECT_NAME}/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-)
-
-
-install(DIRECTORY launch config
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
-
-install(DIRECTORY seto_scararobot2
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
@@ -248,7 +197,7 @@ install(DIRECTORY seto_scararobot2
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_seto_scararobot.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_ptcam_description.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

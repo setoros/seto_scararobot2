@@ -2,7 +2,7 @@
 <launch>
 
     <!-- Load the seto_scararobot URDF model into the parameter server -->
-    <param name="robot_description" textfile="$(find seto_scararobot2_description)/urdf/seto_scararobot.urdf" />
+    <param name="robot_description" textfile="$(find seto_scararobot2_description)/urdf/seto_scararobot2.urdf" />
 
     <!-- dynamixel controllers -->
 	<include file="$(find seto_scararobot2_dynamixel)/launch/dynamixel_controllers.launch" />
@@ -13,5 +13,5 @@
     </node>
 
     <!-- Show in Rviz   -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seto_scararobot2_description)/launch/seto_scararobot2.rviz" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seto_scararobot2_description)/rviz/seto_scararobot2.rviz" />
 </launch>
