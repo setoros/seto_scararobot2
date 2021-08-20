@@ -10,8 +10,8 @@
 $ sudo apt-get update
 $ sudo apt install ros-noetic-joint-state-publisher-gui
 $ sudo apt install ros-noetic-joint-trajectory-controller
-$ sudo apt-get install ros-noetic-rqt-ez-publisher
 $ sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers
+$ sudo apt-get install ros-noetic-dynamixel-workbench-controllers
 $ pip install flask
 $ pip install serial
 ```
@@ -53,28 +53,26 @@ joint_state_publisherの代わりに、move_testノードが立ち上がりま�
 ```
 $ roslaunch seto_scararobot2 move_test2_rviz.launch
 ```
-rqt_ez_publisherが立ち上がりますので、x,yのスライダを動かすことでスカラロボットが動きます。単位は(mm)です。
-※ rqt_ez_publisherパッケージをあらかじめインストールしておく必要があります。
+joint_state_publisher_guiが立ち上がりますので、スライダを動かすことでスカラロボットが動きます。単位は(mm)です。
 
-
-### 使い方10 (ロボットアームをwebアプリから動かす。【本命】) ※実機が必要 (未実装)
+### 使い方4 (ロボットアームをwebアプリから動かす。【本命】) ※実機が必要 
 
 1. 下記コマンドを実行
 
 ```
-$ roslaunch seto_scararobot move_arm_hardware.launch
+$ roslaunch seto_scararobot2 move_arm_hardware.launch
 ```
 
 2. webブラウザで[localhost:5000](localhost:5000)にアクセスする
 
-※ 1.のコマンドの代わりに、seto_scararobot.shを実行してもOK、その場合レイテンシタイマーの設定もシェルの中で行います。
+※ 1.のコマンドの代わりに、seto_scararobot2.shを実行してもOK、その場合レイテンシタイマーの設定もシェルの中で行います。
 
-### 使い方11 (gazenoのロボットアームをwebアプリから動かす。【本命】) (未実装)
+### 使い方5 (gazenoのロボットアームをwebアプリから動かす。
 
 1. 下記コマンドを実行
 
 ```
-$ roslaunch seto_scararobot move_arm_gazebo.launch
+$ roslaunch seto_scararobot2 move_arm_gazebo.launch
 ```
 2. webブラウザで[localhost:5000](localhost:5000)にアクセスする
 
@@ -92,7 +90,7 @@ $ roslaunch seto_scararobot move_arm_gazebo.launch
 ```
 $ source devel/setup.bash
 ```
-それでも直るらない場合はこちらを実行する。
+それでも直らない場合はこちらを実行する。
 ```
 $ rospack profile
 ```
@@ -103,6 +101,7 @@ $ rospack profile
 ## 履歴
 * 2021/07/12 :  とりあえず、１号機から移植
 * 2021/07/27 :  noeticに対応。move_test1とmove_test2を2号機モデルに対応。
+* 2021/08/16 :  ver.0.9リリース
 
 ## Author
 
@@ -111,4 +110,4 @@ $ rospack profile
 
 ## License
 
-This is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+This is under [Apache License 2.0](./LICENSE).
