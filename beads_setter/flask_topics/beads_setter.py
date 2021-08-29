@@ -13,12 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import rospy
+import rclpy
+from rclpy.node import Node
 from std_msgs.msg import String
 from flask import Flask, render_template, request
 import os
+from rclpy.node import Node
+from rclpy.qos import QoSProfile
 
-app = Flask(__name__)
+static_folder_path = str(os.getenv('BS_DIR_PATH')) + '/static'
+template_folder_path = str(os.getenv('BS_DIR_PATH')) + '/templates'
+app = Flask(__name__, static_folder=static_folder_path, template_folder=template_folder_path)
+
+rclpy.init()
+node = Node('publisher')
+qos_profile = QoSProfile(depth=10)
+pub = node.create_publisher(String, 'beads_positions', qos_profile)
+
 @app.route("/", methods=["GET","POST"])
 def index():
     if request.method =="GET":
@@ -27,16 +38,14 @@ def index():
         if str(request.form["text"])=="stop":
             os._exit(0)
         else:
-            pub.publish(str(request.form["text"]))
-        return render_template('index.html')
+            msg = String()
+            msg.data = str(request.form["text"])
+            pub.publish(msg)
+        return render_template('index.html')          
         
-@app.route("/stop")
-def stop():
-    #bad approach
-    os._exit(0)
-
-if __name__ == "__main__":
-    rospy.init_node('beads_map', anonymous=True)
-    pub = rospy.Publisher('beads_positions', String, queue_size=100)
-    r = rospy.Rate(100)
+def main():
     app.run()
+    rclpy.spin(node)
+
+if __name__ == '__main__':
+    main()

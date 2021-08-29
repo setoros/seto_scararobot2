@@ -12,49 +12,66 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros/ros.h>
-#include <sensor_msgs/JointState.h>
 #include <string>
 #include <math.h>
 
-int main(int argc, char **argv)
+#include <chrono>
+#include <cstdio>
+#include <memory>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
+#include <std_msgs/msg/string.hpp>
+#include "builtin_interfaces/msg/time.hpp"
+using namespace std::chrono_literals;
+
+class MoveTest1 : public rclcpp::Node
 {
-  ros::init(argc, argv, "move_test");  // ノードの初期化
-  ros::NodeHandle nh; // ノードハンドラ  
-
-  //パブリッシャの作成
-  ros::Publisher scara_arm_pub;
-  scara_arm_pub = nh.advertise<sensor_msgs::JointState>("/joint_states",1);
-
-  ros::Rate loop_rate(60);  // 制御周期60Hz
-
-  int count=0;
-
-  while(ros::ok()) {
-
-    sensor_msgs::JointState scara_arm;
-    scara_arm.header.stamp = ros::Time::now();
-
+public:
+  size_t count = 0;
+  explicit MoveTest1(const std::string & topic_name)
+  : Node("move_test1")
+  {
     scara_arm.name.resize(3);
     scara_arm.name[0] = "base_to_arm1";
     scara_arm.name[1] = "arm1_to_arm2";
     scara_arm.name[2] = "end_joint";
-
     scara_arm.position.resize(3);
-    //scara_arm.position[0] = -1.0*(float)count/40.0;
-    scara_arm.position[0] = ((3.141592/2) * sin((float(count % 314) / 50.0)));// + (3.141592/4);
+    // タイマー実行されるイベントハンドラー関数
+    auto publish_message =
+      [this]() -> void  // ラムダ式による関数オブジェクトの定義
+      {
+        scara_arm.header.stamp = clock->now();
+        scara_arm.position[0] = ((3.141592/2) * sin((float(count % 314) / 50.0)));
+        scara_arm.position[1] = ((3.141592/3) * sin((float(count % 157) / 25.0))) + (3.141592/3);
+        scara_arm.position[2] = 0.0;
+        scara_arm_pub->publish(scara_arm);
+        count++;
+      };
 
-    //scara_arm.position[1] = 2.0*(float)count/40.0;
-    scara_arm.position[1] = ((3.141592/3) * sin((float(count % 157) / 25.0))) + (3.141592/3);
-
-    scara_arm.position[2] = 0.0;
-
-    count++;
-
-    scara_arm_pub.publish(scara_arm);
-    ros::spinOnce();   // コールバック関数を呼ぶ
-    loop_rate.sleep();
+    // joint_stateトピックの送信設定
+    rclcpp::QoS qos(rclcpp::KeepLast(10));
+    scara_arm_pub = create_publisher<sensor_msgs::msg::JointState>(topic_name, qos);
+    // publish_messageの50ミリ秒周期でのタイマー実行
+    timer_ = create_wall_timer(50ms, publish_message);
   }
+
+private:
+  rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr scara_arm_pub;
+  rclcpp::TimerBase::SharedPtr timer_;
+  sensor_msgs::msg::JointState scara_arm;
+  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
+};
+
+int main(int argc, char * argv[])
+{
+  // クライアントライブラリの初期化
+  setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+  rclcpp::init(argc, argv);
+
+  // joint_state_publisherノードの生成とスピン開始
+  auto node = std::make_shared<MoveTest1>("joint_states");
+  rclcpp::spin(node);
+  rclcpp::shutdown();
 
   return 0;
 }

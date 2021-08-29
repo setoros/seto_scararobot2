@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<robot name="seto_scararobot">
+<robot name="seto_scararobot2">
 
-    <link name="world"/>
+    <link name="world" />
 
     <link name="base_link">
         <visual>
