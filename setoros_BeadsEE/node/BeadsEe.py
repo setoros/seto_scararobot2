@@ -4,8 +4,8 @@
 # ROS Node
 # Beads End effector Control
 #
-# The MIT License (MIT)
-# Copyright (C) 2020 myasu.
+# The Apache License 2.0
+# Copyright (C) 2020-2021 myasu.
 # -----------------------------------------------
 
 import logging
