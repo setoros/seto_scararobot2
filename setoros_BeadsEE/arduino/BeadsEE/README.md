@@ -83,4 +83,4 @@ Y軸（上下）操作
 
 ## 6.License
 
-This is under [MIT Licence](https://opensource.org/licenses/mit-license.php).
+This is under [Apache License 2.0](./LICENSE).
