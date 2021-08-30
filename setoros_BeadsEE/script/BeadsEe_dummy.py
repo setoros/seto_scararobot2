@@ -10,18 +10,20 @@
 
 import logging
 import os
-import rospy
-import rosparam
 import time
 import threading
-# ROSメッセージ
+
+import rclpy
+from rclpy.node import Node
+
 from std_msgs.msg import String
 from std_msgs.msg import Int16
+#include <rclcpp/qos.hpp>
 # 自作クラス
-from BeadsEeSerial import BeadsEeSerial
+from .BeadsEeSerial import BeadsEeSerial
 
 
-class BeadsEe:
+class BeadsEe(Node):
     """
     BeadsEE制御ノード
     """
@@ -31,8 +33,8 @@ class BeadsEe:
     SELFTOPIC = "mes_" + SELFNODE
     # トピック名：動作結果
     SELFTOPIC_RES = "mes_" + SELFNODE + "res"
-
     def __init__(self, argCOM=None):
+
         """
         コンストラクタ
         Parameters
@@ -40,48 +42,47 @@ class BeadsEe:
         argCOM : string
             ポート名。無指定の場合はシリアル制御をしない
         """
-        # ノードの初期化（名称設定、ログレベル指定）
-        rospy.init_node(self.SELFNODE, log_level=rospy.INFO)
 
-        # 指定のトピックからメッセージを受信
-        self._sub = rospy.Subscriber(self.SELFTOPIC, String, self._subscribe)
+        super().__init__('beadsee')
+        
+        # String型のchatterトピックを受信するsubscriptionの定義
+        # （listener_callbackは受信毎に呼び出されるコールバック関数）
+        self.subscriber = self.create_subscription(
+            String, self.SELFTOPIC, self._subscribe, 10)
 
-        # 指定のトピックからメッセージを送信
-        self._pub = rospy.Publisher(self.SELFTOPIC_RES, String, queue_size=10)
-        # 送信周期(Hz)を設定
-        self._rate = rospy.Rate(2)
-
-        # エンドエフェクタ制御のインスタンスを生成
-        if argCOM is None:
-            # ポート名が指定されていないときはデフォルト
-            self._beads = BeadsEeSerial()
-        else:
-            self._beads = BeadsEeSerial(argCom=argCOM)
-
-        # エンドエフェクタ制御の状態確認スレッド
-        thread_ser = threading.Thread(target=self._eventThread_BeadsEe)
-        thread_ser.daemon = True
-        thread_ser.start()
+        # String型のchatterトピックを送信するpublisherの定義
+        # self.subscriber
+        self.publisher = self.create_publisher(String, self.SELFTOPIC_RES, 10)
 
         # 起動完了メッセージ
         #起動メッセージ
-        rospy.loginfo("[{}] Do...(Topic: [Pub: {}, Sub: {}])".format(
+        self.get_logger().info("[{}] Do...(Topic: [Pub: {}, Sub: {}])".format(
             os.path.basename(__file__),
             self.SELFTOPIC_RES,
             self.SELFTOPIC))
+        
+        self._publish("Waiting")
 
-    def _subscribe(self, data):
+    def _subscribe(self, msg):
         """Subscribeコールバック"""
         # 受信コマンドをトリム
-        command = data.data.strip()
+        command = msg.data.strip()
         # 受信コマンドの表示
-        rospy.loginfo("[%s] Recieved command: %s" %
+        self.get_logger().info("[%s] Recieved command: %s" %
                       (self.__class__.__name__, command))
         # 受信コマンドの解析と処理分岐
         if command == "grub":
-            self._beads.grub()
+            # self._beads.grub()
+            self._publish("Moving")
+            time.sleep(0.5)
+            self._publish("Goal")
+            self._publish("Waiting")
         elif command == "release":
-            self._beads.release()
+            # self._beads.release()
+            self._publish("Moving")
+            time.sleep(0.5)
+            self._publish("Goal")
+            self._publish("Waiting")
         else:
             rospy.loginfo("[%s] ! Command error" %
                           (self.__class__.__name__))
@@ -113,7 +114,11 @@ class BeadsEe:
             True: 成功、False: 失敗
         """
         try:
-            self._pub.publish(argData)
+            # self._pub.publish(argData)
+            msg = String()
+            msg.data = argData
+            # chatterトピックにmsgを送信
+            self.publisher.publish(msg)
             return True
         except:
             # 例外発生時にメッセージ
@@ -121,19 +126,17 @@ class BeadsEe:
             traceback.print_exc()
         return False
 
+def main(args=None):
+    # Pythonクライアントライブラリの初期化
+    rclpy.init(args=args)
+    # beadsee ノードの作成
+    beadsee = BeadsEe()
+    # minimal_publisherノードの実行開始
+    rclpy.spin(beadsee)
+    # Pythonクライアントライブラリの終了
+    rclpy.shutdown()
 
 if __name__ == '__main__':
-    """メイン関数"""
+    main()
 
-    try:
-        # インスタンスを生成
-        beadsee = BeadsEe()
 
-        # プロセス終了までアイドリング
-        rospy.spin()
-    except rospy.ROSInterruptException:
-        # 停止
-        pass
-    finally:
-        # 終了
-        rospy.loginfo("[%s] Done." % (os.path.basename(__file__)))

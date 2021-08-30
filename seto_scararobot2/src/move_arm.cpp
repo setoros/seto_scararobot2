@@ -12,100 +12,75 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros/ros.h>
-#include <sensor_msgs/JointState.h>
-#include <geometry_msgs/Point.h>
-#include <string>
-#include <math.h>
-#include <std_msgs/String.h>
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
+#include <std_msgs/msg/string.hpp>
+#include "rclcpp/clock.hpp"
+#include "rclcpp/time_source.hpp"
+#include <geometry_msgs/msg/point.hpp>
 
-// アームの長さを入れる(単位はビーズを置く位置（beads.x ,beads.y）と揃える)
-// 現在はmm
+using namespace std::chrono_literals;
 
-float arm1_length = 90.25;    // arm1の長さ
-float arm2_length = 90.25;    // arm2の長さ
+rclcpp::Node::SharedPtr node = nullptr;
+geometry_msgs::msg::Point arm_position;
+bool is_reveived_point = false;
 
-float minimam_length = 60.00; // 最小目標距離(中心からの長さ)
-
-float arm1_sita = 0.0;
-float arm2_sita = 0;
-float beads_pos_x = 180.0;
-float beads_pos_y = 0.0;
-
-const std::string MSG_ARM_WAITING    = "Waiting";
-const std::string MSG_ARM_MOVING    = "Moving";
-const std::string MSG_ARM_GOAL    = "Goal";
-
-void armPositionCallback(const geometry_msgs::Point &beads)
-{
-	beads_pos_x = (float)beads.x;
-	beads_pos_y = (float)beads.y;
+void topic_callback(const geometry_msgs::msg::Point::SharedPtr msg){
+   arm_position.x = msg->x;
+   arm_position.y = msg->y;
+   is_reveived_point = true;
 }
 
-void calculate_arm_pos()
+int main(int argc, char * argv[])
 {
-  float arm1_length_2 = arm1_length * arm1_length;
-  float arm2_length_2 = arm2_length * arm2_length;
-  float x = beads_pos_x;
-  float y = beads_pos_y;
-  float x_2 = x * x;
-  float y_2 = y * y;
+  rclcpp::init(argc, argv);
 
-  float length_goal;
-  length_goal =  sqrt(x_2 + y_2);
-	if ( ((arm1_length + arm2_length) <= length_goal)  || (minimam_length >= length_goal) ){
-    ROS_ERROR("[ERROR]:Can't reach the goal.");
-    return;
-	}
-  if ( x < 0.0 || y < 0.0){
-    ROS_ERROR("[ERROR]:Out of range for x or y.");
-    return;
-	}
-  // IK計算
-  arm1_sita = atan2(y,x) - acosf( (arm1_length_2 - arm2_length_2 + (x_2 + y_2)) / (2 * arm1_length * length_goal) );
-  arm2_sita = M_PI - acosf( (arm1_length_2 + arm2_length_2 - (x_2 + y_2)) / (2 * arm1_length * arm2_length) );
-  return;
-}
+  node = rclcpp::Node::make_shared("move_arm");
+  auto joint_state_pub= node->create_publisher<sensor_msgs::msg::JointState>("joint_states", 10);
+  auto arm_state_pub = node->create_publisher<std_msgs::msg::String>("arm_states", 10);
+  auto sub_ = node->create_subscription<geometry_msgs::msg::Point>(
+      "arm_positions", 100, std::bind(topic_callback, std::placeholders::_1));
 
-int main(int argc, char **argv)
-{
-  ros::init(argc, argv, "move_arm");  // ノードの初期化
-  ros::NodeHandle nh; // ノードハンドラ
+  rclcpp::WallRate loop_rate(100);
 
-  //パブリッシャの作成
-  ros::Publisher pub_scara_arm;
-  ros::Publisher pub_arm_state;
-  ros::Subscriber sub_beads;
-  
-  pub_scara_arm = nh.advertise<sensor_msgs::JointState>("/joint_states",1);
-  pub_arm_state = nh.advertise<std_msgs::String>("/arm_states",1);
-  sub_beads = nh.subscribe("/arm_positions", 60, armPositionCallback);
-  
-  ros::Rate loop_rate(60);  // 制御周期60Hz
+  rclcpp::TimeSource ts(node);
+  rclcpp::Clock::SharedPtr clock = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
+  ts.attachClock(clock);
 
-  sensor_msgs::JointState scara_arm;
-  std_msgs::String arm_state;
+  sensor_msgs::msg::JointState scara_arm;
+  std_msgs::msg::String arm_state;
 
-  scara_arm.name.resize(3);
-  scara_arm.name[0] = "base_to_arm1";
-  scara_arm.name[1] = "arm1_to_arm2";
-  scara_arm.name[2] = "end_joint";
+  scara_arm.name.push_back("base_to_arm1");
+  scara_arm.name.push_back("arm1_to_arm2");
+  scara_arm.name.push_back("end_joint");
+  scara_arm.position.push_back(0.0);
+  scara_arm.position.push_back(0.0);
+  scara_arm.position.push_back(0.0);
+  scara_arm.header.stamp = clock->now();
+  joint_state_pub->publish(scara_arm);
 
-  scara_arm.position.resize(3);
-  scara_arm.position[0] = 0.0;
-  scara_arm.position[1] = 0.0;
-  scara_arm.position[2] = 0.0;
 
-  while(ros::ok()){
-    scara_arm.header.stamp = ros::Time::now();
-    calculate_arm_pos();
-    scara_arm.position[0] = arm1_sita;
-    scara_arm.position[1] = arm2_sita;
+  while (rclcpp::ok()) {
+    scara_arm.position[0] = arm_position.x;
+    scara_arm.position[1] = arm_position.y;
     scara_arm.position[2] = 0.0;
-    pub_scara_arm.publish(scara_arm);
-    ros::spinOnce();   // コールバック関数を呼ぶ
+    scara_arm.header.stamp = clock->now();
+    joint_state_pub->publish(scara_arm);
+    if(is_reveived_point == true)
+    {
+      // ダイナミクセルから座標を取得して情報を送る
+      // 未実装
+      // arm_state.data = "Waiting";
+      // arm_state.data = "Moving";
+      arm_state.data = "Goal";
+      arm_state_pub->publish(arm_state);
+      is_reveived_point = false;
+    }
+    rclcpp::spin_some(node);
     loop_rate.sleep();
   }
+
+  rclcpp::shutdown();
+
   return 0;
 }
-

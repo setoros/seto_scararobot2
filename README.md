@@ -8,10 +8,8 @@
 
 ```
 $ sudo apt-get update
-$ sudo apt install ros-noetic-joint-state-publisher-gui
-$ sudo apt install ros-noetic-joint-trajectory-controller
-$ sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers
-$ sudo apt-get install ros-noetic-dynamixel-workbench-controllers
+$ sudo apt install ros-foxy-xacro
+$ sudo apt install ros-foxy-geometry-msgs
 $ pip install flask
 $ pip install serial
 ```
@@ -34,7 +32,7 @@ $ catkin_make
 1. 下記コマンドを実行
 
 ```
-$ roslaunch seto_scararobot2_description display.launch
+$ roslaunch seto_scararobot2 move_test2_rviz.py
 ```
 
 ### 使い方2 (rviz上のスカラロボットが勝手に動きます。)
@@ -42,39 +40,32 @@ $ roslaunch seto_scararobot2_description display.launch
 1. 下記コマンドを実行
 
 ```
-$ roslaunch seto_scararobot2 move_test1_rviz.launch
+$ roslaunch seto_scararobot2 move_test1_1_rviz.py
 ```
-joint_state_publisherの代わりに、move_testノードが立ち上がります。
+joint_state_publisherの代わりに、move_test1_1ノードが立ち上がります。
 
-### 使い方3 (IKで座標を指定してrviz上のスカラロボットを動かす。)
+### 使い方3 (rviz2のロボットアームをwebアプリから動かす。【本命】) 
 
 1. 下記コマンドを実行
 
 ```
-$ roslaunch seto_scararobot2 move_test2_rviz.launch
+$ export BS_DIR_PATH = [flask_topicsの絶対パス]
+例：export BS_DIR_PATH =　/home/user/ros2/src/seto_scararobot2/beads_setter/flask_topics
+$ roslaunch seto_scararobot seto_scararobot2.py
 ```
-joint_state_publisher_guiが立ち上がりますので、スライダを動かすことでスカラロボットが動きます。単位は(mm)です。
+2. webブラウザで[localhost:5000](localhost:5000)にアクセスする
 
-### 使い方4 (ロボットアームをwebアプリから動かす。【本命】) ※実機が必要 
+### 使い方4 (ロボットアームをwebアプリから動かす。【本命】) ※実機が必要 (未実装)
 
 1. 下記コマンドを実行
 
 ```
-$ roslaunch seto_scararobot2 move_arm_hardware.launch
+$ roslaunch seto_scararobot move_arm_hardware.launch
 ```
 
 2. webブラウザで[localhost:5000](localhost:5000)にアクセスする
 
-※ 1.のコマンドの代わりに、seto_scararobot2.shを実行してもOK、その場合レイテンシタイマーの設定もシェルの中で行います。
-
-### 使い方5 (gazenoのロボットアームをwebアプリから動かす。
-
-1. 下記コマンドを実行
-
-```
-$ roslaunch seto_scararobot2 move_arm_gazebo.launch
-```
-2. webブラウザで[localhost:5000](localhost:5000)にアクセスする
+※ 1.のコマンドの代わりに、seto_scararobot.shを実行してもOK、その場合レイテンシタイマーの設定もシェルの中で行います。
 
 ### FTDIドライバのレイテンシタイマーの変更
 
@@ -88,20 +79,14 @@ $ roslaunch seto_scararobot2 move_arm_gazebo.launch
 ### catkin_makeを実行してもroslaunchでlaunchファイルが実行できない or 予測変換で出現しない
 以下のコマンドを実行する。
 ```
-$ source devel/setup.bash
-```
-それでも直らない場合はこちらを実行する。
-```
-$ rospack profile
+$ source install/setup.bash && source install/local_setup.bash
 ```
 
 ## 予定・課題
 * (n/a)
 
 ## 履歴
-* 2021/07/12 :  とりあえず、１号機から移植
-* 2021/07/27 :  noeticに対応。move_test1とmove_test2を2号機モデルに対応。
-* 2021/08/16 :  ver.0.9リリース
+* 2021/08/29 :  foxyに対応。ハード対応は今後行う。
 
 ## Author
 
