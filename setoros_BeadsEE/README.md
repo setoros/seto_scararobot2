@@ -9,7 +9,7 @@
 
 * RaspberryPi 3B+, 4B+
 * Raspbian Buster
-* python 2.x
+* python 3.x
 * python-serial
 
 ## 2.Installation
@@ -106,4 +106,4 @@ $ cd ~/catkin_ws/src/beadsee/node
 
 ## 6.License
 
-This is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+This is under [Apache License 2.0](./LICENSE).
