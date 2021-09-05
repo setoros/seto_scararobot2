@@ -1,4 +1,4 @@
-#!/usr/bin/env /usr/bin/python
+#!/usr/bin/env /usr/bin/python3
 # -*- coding: utf-8 -*-
 # -----------------------------------------------
 # ROS Node
@@ -29,7 +29,7 @@ class BeadsEe:
     SELFNODE = "beadsee"
     # トピック名：制御受付
     SELFTOPIC = "mes_" + SELFNODE
-    # トピック名：動作結果
+    # トピック名：動作結
     SELFTOPIC_RES = "mes_" + SELFNODE + "res"
 
     def __init__(self, argCOM=None):

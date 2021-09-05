@@ -1,4 +1,4 @@
-#!/usr/bin/env /usr/bin/python
+#!/usr/bin/env /usr/bin/python3
 # -*- coding: utf-8 -*-
 # -----------------------------------------------
 # Beads End effector Control

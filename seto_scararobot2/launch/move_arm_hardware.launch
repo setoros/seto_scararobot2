@@ -24,9 +24,11 @@
   <!-- 統括コントロール -->
 	<node name="seto_scararobot2" pkg="seto_scararobot2" type="seto_scararobot2"/>
 
-  <!-- エンドエフェクタ -->
- <include file="$(find beadsee)/launch/beadsee.launch"/>
-<!--   <include file="$(find beadsee)/launch/beadsee_dummy.launch"/>-->
+  <!-- エンドエフェクタの制御がmove_arm_dynamixel2に内包されたため不要に ---->>
+    <!-- エンドエフェクタ -->
+    <!--  <include file="$(find beadsee)/launch/beadsee.launch"/>-->
+    <!-- エンドエフェクタ ダミーノード -->
+    <!--  <include file="$(find beadsee)/launch/beadsee_dummy.launch"/>-->
 
   <!-- webサーバーノード起動 -->
   <node pkg="beads_setter" name="beads_setter" type="beads_setter.py"/>

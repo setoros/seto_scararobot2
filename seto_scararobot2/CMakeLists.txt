@@ -139,6 +139,11 @@ add_executable(move_arm_dynamixel2 src/move_arm_dynamixel2.cpp)
 add_dependencies(move_arm_dynamixel2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(move_arm_dynamixel2 ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
+add_executable(move_arm_dynamixel2_gazebo src/move_arm_dynamixel2_gazebo.cpp)
+add_dependencies(move_arm_dynamixel2_gazebo ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(move_arm_dynamixel2_gazebo ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
+
+
 add_executable(seto_scararobot2 src/seto_scararobot2.cpp)
 add_dependencies(seto_scararobot2 ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(seto_scararobot2 ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
@@ -193,6 +198,9 @@ install(TARGETS move_arm_dynamixel2
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
+install(TARGETS move_arm_dynamixel2_gazebo
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}

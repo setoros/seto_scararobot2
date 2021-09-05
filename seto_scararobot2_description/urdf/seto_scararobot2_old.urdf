@@ -83,22 +83,6 @@
         </inertial>
     </link>
 
-    <link name="ee1"> <!-- Control POINT !!!!!! -->
-        <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0" />            <!-- Center of gravity (m) -->
-            <mass value = "0.001" />                      <!-- mass (kg) -->
-            <inertia ixx = "1.0" ixy = "0.0" ixz = "0.0" iyy =" 1.0" iyz =" 0.0" izz =" 1.0"/><!-- inertia (kg.m^2) -->
-        </inertial>
-    </link>
-
-    <link name="ee2"> <!-- Control POINT !!!!!! -->
-        <inertial>
-            <origin xyz="0 0 0" rpy="0 0 0" />            <!-- Center of gravity (m) -->
-            <mass value = "0.001" />                      <!-- mass (kg) -->
-            <inertia ixx = "1.0" ixy = "0.0" ixz = "0.0" iyy =" 1.0" iyz =" 0.0" izz =" 1.0"/><!-- inertia (kg.m^2) -->
-        </inertial>
-    </link>
-
     <joint name="fixed_world" type="fixed">
         <parent link="world"/>
         <child link="base_link"/>
@@ -122,21 +106,6 @@
         <parent link="arm2_link" />
         <child link="endpoint" />
         <origin xyz="0.09025 0 0" rpy="0 0 0" />
-        <axis xyz="0 0 1" />
-        <limit effort="1000.0" lower="-3.14159" upper="3.14159" velocity="2.0" />
-    </joint>
-        
-    <joint name="ee1_joint" type="revolute">
-        <parent link="endpoint" />
-        <child link="ee1" />
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <axis xyz="0 0 1" />
-        <limit effort="1000.0" lower="-3.14159" upper="3.14159" velocity="2.0" />
-    </joint>
-    <joint name="ee2_joint" type="revolute">
-        <parent link="ee1" />
-        <child link="ee2" />
-        <origin xyz="0 0 0" rpy="0 0 0" />
         <axis xyz="0 0 1" />
         <limit effort="1000.0" lower="-3.14159" upper="3.14159" velocity="2.0" />
     </joint>
