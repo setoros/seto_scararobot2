@@ -346,22 +346,22 @@ public:
         {
           if(arm_positions[set_count] == COLOR1)
           {
-            arm_position.x = color_first[color_first.size() - 1][0] * DISTANCE;
-            arm_position.y = color_first[color_first.size() - 1][1] * DISTANCE;
+            arm_position.x = color_first[color_first.size() - 1][0] * DISTANCE + OFFSET_X;
+            arm_position.y = color_first[color_first.size() - 1][1] * DISTANCE + OFFSET_Y;
             color_first.pop_back();
             ROS_WARN("arm_position.x = %lf arm_position.y = %lf", arm_position.x, arm_position.y);
           }
           else if(arm_positions[set_count] == COLOR2)
           {
-            arm_position.x = color_second[color_second.size() - 1][0] * DISTANCE;
-            arm_position.y = color_second[color_second.size() - 1][1] * DISTANCE;
+            arm_position.x = color_second[color_second.size() - 1][0] * DISTANCE + OFFSET_X;
+            arm_position.y = color_second[color_second.size() - 1][1] * DISTANCE + OFFSET_Y;
             color_second.pop_back();
             ROS_INFO("arm_position.x = %lf, arm_position.y = %lf", arm_position.x, arm_position.y);
           }
           else if(arm_positions[set_count] == COLOR3)
           {
-            arm_position.x = color_third[color_third.size() - 1][0] * DISTANCE;
-            arm_position.y = color_third[color_third.size() - 1][1] * DISTANCE;
+            arm_position.x = color_third[color_third.size() - 1][0] * DISTANCE + OFFSET_X;
+            arm_position.y = color_third[color_third.size() - 1][1] * DISTANCE + OFFSET_Y;
             color_third.pop_back();
             ROS_INFO("arm_position.x = %lf, arm_position.y = %lf", arm_position.x, arm_position.y);
           }

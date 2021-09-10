@@ -305,9 +305,9 @@ int main(int argc, char **argv)
           pub_mes_beadsee_res.publish(MES_BEADS_ee_RES);// 現在の状態をPublish(1回だけ)
           // 処理を書く
 
-
           // 下ろす =================================
-          
+          jtp0.points[1].time_from_start = ros::Duration(0.5);  //実行時間0.5sec に変更
+
           jtp0.points[0].positions[0] = jtp0.points[1].positions[0];    // 現在の値から動かさない
           jtp0.points[0].positions[1] = jtp0.points[1].positions[1];    // 現在の値から動かさない
           jtp0.points[0].positions[2] = jtp0.points[1].positions[2];    // 現在の値から動かさない
@@ -318,8 +318,13 @@ int main(int argc, char **argv)
           jtp0.points[1].positions[2] = 0+0.8;          // 0.8は取り付けオフセット
           jtp0.points[1].positions[3] = jtp0.points[1].positions[3];
           pub_scara_arm_trajectory.publish(jtp0);
-          usleep(1500*1000);  // 1.5秒待ち
+
+          usleep(500*1000);  // 0.5秒待ち
+
           // はなす =================================
+
+           jtp0.points[1].time_from_start = ros::Duration(0.2);  //実行時間0.2sec に変更
+
           jtp0.points[0].positions[0] = jtp0.points[1].positions[0];    // 現在の値から動かさない
           jtp0.points[0].positions[1] = jtp0.points[1].positions[1];    // 現在の値から動かさない
           jtp0.points[0].positions[2] = jtp0.points[1].positions[2];    // 現在の値から動かさない
@@ -330,8 +335,13 @@ int main(int argc, char **argv)
           jtp0.points[1].positions[2] = jtp0.points[1].positions[2];
           jtp0.points[1].positions[3] = 0.0;
           pub_scara_arm_trajectory.publish(jtp0);
-          usleep(1500*1000);  // 1.5秒待ち
+
+          usleep(200*1000);  // 0.2秒待ち
+
           // あげる =================================
+
+          jtp0.points[1].time_from_start = ros::Duration(0.5);  //実行時間0.5sec に変更
+
           jtp0.points[0].positions[0] = jtp0.points[1].positions[0];    // 現在の値から動かさない
           jtp0.points[0].positions[1] = jtp0.points[1].positions[1];    // 現在の値から動かさない
           jtp0.points[0].positions[2] = jtp0.points[1].positions[2];    // 現在の値から動かさない
@@ -342,8 +352,10 @@ int main(int argc, char **argv)
           jtp0.points[1].positions[2] = -3.14+0.8;          // 0.8は取り付けオフセット
           jtp0.points[1].positions[3] = jtp0.points[1].positions[3];
           pub_scara_arm_trajectory.publish(jtp0);
-          usleep(1500*1000);  // 1.5秒待ち
 
+          usleep(500*1000);  // 0.5秒待ち
+
+          jtp0.points[1].time_from_start = ros::Duration(1.0);  //実行時間1.0sec に戻す
 
           MES_BEADS_ee_RES.data = "Goal";
           pub_mes_beadsee_res.publish(MES_BEADS_ee_RES);// 現在の状態をPublish(1回だけ)          
@@ -366,10 +378,11 @@ int main(int argc, char **argv)
           pub_mes_beadsee_res.publish(MES_BEADS_ee_RES);// 現在の状態をPublish(1回だけ)
 
           // 処理を書く
-          usleep(1000*1000);
+          usleep(500*1000);   // 0.5秒静止
 
           // おろす =================================
-          
+          jtp0.points[1].time_from_start = ros::Duration(0.5);  //実行時間0.5sec に変更
+
           jtp0.points[0].positions[0] = jtp0.points[1].positions[0];    // 現在の値から動かさない
           jtp0.points[0].positions[1] = jtp0.points[1].positions[1];    // 現在の値から動かさない
           jtp0.points[0].positions[2] = jtp0.points[1].positions[2];    // 現在の値から動かさない
@@ -380,7 +393,8 @@ int main(int argc, char **argv)
           jtp0.points[1].positions[2] = 0+0.8;          // 0.8は取り付けオフセット
           jtp0.points[1].positions[3] = jtp0.points[1].positions[3];
           pub_scara_arm_trajectory.publish(jtp0);
-          usleep(1500*1000);  // 1.5秒待ち
+
+          usleep(500*1000);  // 0.5秒待ち
 
           // つかむ =================================
           jtp0.points[0].positions[0] = jtp0.points[1].positions[0];    // 現在の値から動かさない
@@ -393,7 +407,34 @@ int main(int argc, char **argv)
           jtp0.points[1].positions[2] = jtp0.points[1].positions[2];
           jtp0.points[1].positions[3] = -0.5;
           pub_scara_arm_trajectory.publish(jtp0);
-          usleep(1500*1000);  // 1.5秒待ち
+
+          usleep(500*1000);  // 0.5秒待ち
+
+
+          // グリグリする ==========================
+
+          jtp0.points[1].time_from_start = ros::Duration(0.2);  //実行時間0.2sec に変更
+
+          jtp0.points[1].positions[1] = jtp0.points[1].positions[1] - 0.02;    // 現在の値から動かさない
+          pub_scara_arm_trajectory.publish(jtp0);
+          usleep(200*1000);  // 0.2秒待ち
+
+          jtp0.points[1].positions[1] = jtp0.points[1].positions[1] + 0.04;    // 現在の値から動かさない
+          pub_scara_arm_trajectory.publish(jtp0);
+          usleep(200*1000);  // 0.2秒待ち
+
+          jtp0.points[1].positions[1] = jtp0.points[1].positions[1] - 0.04;    // 現在の値から動かさない
+          pub_scara_arm_trajectory.publish(jtp0);
+          usleep(200*1000);  // 0.2秒待ち
+
+          jtp0.points[1].positions[1] = jtp0.points[1].positions[1] + 0.04;    // 現在の値から動かさない
+          pub_scara_arm_trajectory.publish(jtp0);
+          usleep(200*1000);  // 0.2秒待ち
+
+          jtp0.points[1].positions[1] = jtp0.points[1].positions[1] - 0.02;    // 現在の値から動かさない
+
+          jtp0.points[1].time_from_start = ros::Duration(0.5);  //実行時間0.5sec に変更
+
           // あげる =================================
           jtp0.points[0].positions[0] = jtp0.points[1].positions[0];    // 現在の値から動かさない
           jtp0.points[0].positions[1] = jtp0.points[1].positions[1];    // 現在の値から動かさない
@@ -405,8 +446,10 @@ int main(int argc, char **argv)
           jtp0.points[1].positions[2] = -3.14+0.8;          // 0.8は取り付けオフセット
           jtp0.points[1].positions[3] = jtp0.points[1].positions[3];
           pub_scara_arm_trajectory.publish(jtp0);
-          usleep(1500*1000);  // 1.5秒待ち
 
+          usleep(500*1000);  // 0.5秒待ち
+
+          jtp0.points[1].time_from_start = ros::Duration(1.0);  //実行時間1.0sec に戻す
 
           MES_BEADS_ee_RES.data = "Goal";
           pub_mes_beadsee_res.publish(MES_BEADS_ee_RES);// 現在の状態をPublish(1回だけ)          
@@ -420,12 +463,6 @@ int main(int argc, char **argv)
       default:
         break;
     }
-
-
-
-
-
-
     
     loop_rate.sleep();
   }

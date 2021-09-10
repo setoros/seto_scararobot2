@@ -24,7 +24,7 @@
   <!-- 統括コントロール -->
 	<node name="seto_scararobot2" pkg="seto_scararobot2" type="seto_scararobot2"/>
 
-  <!-- エンドエフェクタの制御がmove_arm_dynamixel2に内包されたため不要に ---->>
+  <!-- エンドエフェクタの制御がmove_arm_dynamixel2に内包されたため不要に -->
     <!-- エンドエフェクタ -->
     <!--  <include file="$(find beadsee)/launch/beadsee.launch"/>-->
     <!-- エンドエフェクタ ダミーノード -->
