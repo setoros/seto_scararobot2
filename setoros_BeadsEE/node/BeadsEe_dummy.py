@@ -18,7 +18,7 @@ import threading
 from std_msgs.msg import String
 from std_msgs.msg import Int16
 # 自作クラス
-from BeadsEeSerial import BeadsEeSerial
+# from BeadsEeSerial import BeadsEeSerial
 
 
 class BeadsEe:
